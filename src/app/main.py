@@ -1,19 +1,19 @@
-#%%
+# %% Libraires
+import os
+import pickle
 from flask import Flask, request, jsonify
 from flask_basicauth import BasicAuth # Authentication with username and password
 from textblob import TextBlob
 from googletrans import Translator #using version 3.1.0a0
-from sklearn.linear_model import LinearRegression
-import pickle
 #%% Load Model from pickle
-model = pickle.load(open('house_quotes.sav', 'rb'))
+model = pickle.load(open('../../models/house_quotes.sav', 'rb'))
 
 # Columns for X table
 columns = ['tamanho', 'ano', 'garagem']
 #%% Application
 app = Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = 'thiago'
-app.config['BASIC_AUTH_PASSWORD'] = 'alura'
+app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_AUTH_USERNAME')
+app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_AUTH_PASSWORD')
 
 basic_auth = BasicAuth(app) # Needed on each end point
 
@@ -23,7 +23,7 @@ def home():
     return "My first API."
 
     # End point to the url
-@app.route('/sentiment/<message>')  # "message" is an object here, it's passed in the url, not in the page.
+@app.route('/sentiment/<message>') #"message" is object here, it's passed in the url not in the page
 @basic_auth.required
 def sentiment(message):
     translator = Translator()
@@ -49,5 +49,5 @@ def quote_lsit():
     return jsonify(price=price[0]) # Use 0 to get the first value from the np.array
 
 
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0') # to do the deploy in more than one environment. (Docker, local, etc)
 # %%
