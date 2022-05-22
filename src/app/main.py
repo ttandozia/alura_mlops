@@ -1,4 +1,6 @@
 # %% Libraires
+# Use this code to get requirements: pip list --format=freeze > requirements.txt
+
 import os
 import pickle
 from flask import Flask, request, jsonify
