@@ -11,7 +11,7 @@ from googletrans import Translator #using version 3.1.0a0
 from waitress import serve
 
 #%% Load Model from pickle
-model = pickle.load(open('../../models/house_quotes.sav', 'rb'))
+model = pickle.load(open('models/house_quotes.sav', 'rb'))
 
 # Columns for X table
 columns = ['tamanho', 'ano', 'garagem']
@@ -56,5 +56,20 @@ def quote_lsit():
 
 app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT')) # to do the deploy in more than one environment. (Docker, local, etc)
 # %%
+'''
+Note: Some modifications were necessary to run the app in windows. Because
+of that, there's an error in professor's version that he fix with:
 
+if __name__ == __main__:
+    app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT'))
+
+He calls the app.run because he is using gunicorn (doesn't work on Windows).
+
+Since my code uses waitress, the following code is enough to run without errors
+until this point.
+
+PS: Course link: https://cursos.alura.com.br/course/mlops-deploy-modelos/task/83754
+    Class 03 - Aplicação servless com App Engine
+    Topic 03 - Arquivo de configuração
+'''
 serve(app.run, listen='*:'+os.environ.get('PORT'))
