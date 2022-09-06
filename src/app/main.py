@@ -11,7 +11,7 @@ from googletrans import Translator #using version 3.1.0a0
 from waitress import serve
 
 #%% Load Model from pickle
-model = pickle.load(open('../../models/house_quotes.sav', 'rb'))
+model = pickle.load(open('models/house_quotes.sav', 'rb'))
 
 # Columns for X table
 columns = ['tamanho', 'ano', 'garagem']
